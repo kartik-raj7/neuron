@@ -94,7 +94,7 @@ const ContentBox = ({ itm }) => {
           Update
         </Button>
       </div>
-      <div className="w-[80%] py-4">
+      <div className="w-[95%] py-1">
         <p className="text-white w-full">Name - {apiData?.name}</p>
         <p className="text-white w-full">Data - {apiData?.data}</p>
         </div>
