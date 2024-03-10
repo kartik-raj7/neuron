@@ -4,9 +4,12 @@ import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import ContentBox from "./components/Box";
 
+// WidthProvider for making the layout responsive
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
+// Main component for the draggable grid layout
 const DragFromOutsideLayout = () => {
+  // State for the compact type, mounting status, and initial layout
   const [compactType, setCompactType] = useState("horizontal");
   const [mounted, setMounted] = useState(false);
   const [layout, setLayout] = useState([
@@ -14,21 +17,27 @@ const DragFromOutsideLayout = () => {
     { i: "c", x: 2, y: 0, w: 4, h: 12 },
     { i: "b", x: 0, y: 1, w: 7, h: 14 },
   ]);
+
+  // Effect hook to set the mounting status
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Callback function triggered when an element is dropped onto the grid
   const onDrop = (elemParams) => {
     alert(`Element parameters:\n${JSON.stringify(elemParams, ["x", "y", "w", "h"], 2)}`);
   };
 
   return (
     <div className="flex justify-center items-center">
+      {/* Draggable element */}
       <div
         className="droppable-element"
         draggable={true}
         onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
       ></div>
+
+      {/* Responsive grid layout */}
       <ResponsiveReactGridLayout
         rowHeight={30}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
@@ -42,10 +51,12 @@ const DragFromOutsideLayout = () => {
         droppingItem={{ i: "xx", h: 50, w: 250 }}
         className="w-[65%]"
       >
+        {/* Map through the layout and render ContentBox for each item */}
         {layout.map((itm, i) => (
           <div key={itm.i} data-grid={itm} className="bg-slate-500 flex items-center justify-center" onMouseDown={(e) => e.stopPropagation()}>
             <div  >
-           <ContentBox itm={itm}/>
+              {/* ContentBox component for rendering and managing content */}
+              <ContentBox itm={itm}/>
             </div>
           </div>
         ))}
