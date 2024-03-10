@@ -80,3 +80,19 @@ export const axiosPatch = async (url, data, contentType = 'application/json') =>
   // Return the response object
   return response;
 };
+
+export const axiosGet = async (url, params = {}, contentType = 'application/json') => {
+    let response = {};
+    try {
+      const result = await axiosInstance.get(url);
+      response = result.data || {};
+      response.status = result?.status <=203;
+      response.message = result?.data?.message;
+    } catch (e) {
+      response.status = false;
+      response.message = 'something went wrong';
+      response.data = e;
+    }
+    return response;
+  };
+  

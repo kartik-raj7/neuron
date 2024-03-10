@@ -3,6 +3,9 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import ContentBox from "./components/Box";
+import { Button } from "antd/es/radio";
+import { Col, Row } from "antd";
+import { axiosGet } from "./api/apiservice";
 
 // WidthProvider for making the layout responsive
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -11,6 +14,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const DragFromOutsideLayout = () => {
   // State for the compact type, mounting status, and initial layout
   const [compactType, setCompactType] = useState("horizontal");
+  const [count,setCount] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [layout, setLayout] = useState([
     { i: "a", x: 0, y: 0, w: 2, h: 12 },
@@ -27,8 +31,17 @@ const DragFromOutsideLayout = () => {
   const onDrop = (elemParams) => {
     alert(`Element parameters:\n${JSON.stringify(elemParams, ["x", "y", "w", "h"], 2)}`);
   };
-
+  const getCount  = async()=>{
+    const apiResponse = await axiosGet('/count');
+    console.log(apiResponse)
+    setCount(apiResponse.count);
+  }
   return (
+    <>
+    <Row className="flex justify-center">
+    <Row><Col span={12} className="text-2xl">{count}</Col></Row>
+    <Row onClick={getCount}><Button className="bg-slate-500">Get Count</Button></Row>
+    </Row>
     <div className="flex justify-center items-center">
       {/* Draggable element */}
       <div
@@ -36,7 +49,6 @@ const DragFromOutsideLayout = () => {
         draggable={true}
         onDragStart={(e) => e.dataTransfer.setData("text/plain", "")}
       ></div>
-
       {/* Responsive grid layout */}
       <ResponsiveReactGridLayout
         rowHeight={30}
@@ -62,6 +74,7 @@ const DragFromOutsideLayout = () => {
         ))}
       </ResponsiveReactGridLayout>
     </div>
+    </>
   );
 };
 
